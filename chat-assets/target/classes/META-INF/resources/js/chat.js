@@ -35,28 +35,25 @@ $(document).ready(function() {
 		// Build the connection
 		doSockets(pseudo);
 	}
-	
+
 	promptOptionsSetPseudo = {
-			title : "Entre ton nouveau pseudo ptit gars!",
-			buttons : {
-				confirm : {
-					label : 'Go',
-					className : 'btn-success'
-				}
-			},
-			callback : function(result) {
-				if (!result)
-					bootbox.prompt(promptOptionsSetPseudo);
-				else {
-					Cookies.set('pseudo', result, {
-						expires : 30
-					});
-					setPseudo(result);
-				}
+		title : "Entre ton nouveau pseudo ptit gars!",
+		buttons : {
+			confirm : {
+				label : 'Go',
+				className : 'btn-success'
 			}
-		};
-	
-	
+		},
+		callback : function(result) {
+			if (result) {
+				Cookies.set('pseudo', result, {
+					expires : 30
+				});
+				setPseudo(result);
+			}
+		}
+	};
+
 	$("#setPseudo").click(function() {
 		Cookies.remove('pseudo');
 		Cookies.set('pseudo', $("#newPseudo").val(), {

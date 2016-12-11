@@ -84,7 +84,6 @@ public class ChatController {
 			callback.setType("callback");
 			callback.setPseudo("Admin");
 			s.getBasicRemote().sendObject(callback);
-			s.getBasicRemote().sendObject(messages);
 
 			pseudos.setPseudo(message.getPseudo(), s.getId());
 			broadcast(pseudos, s);
