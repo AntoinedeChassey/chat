@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Un chat pour oGame">
+<meta name="author" content="Antoine de Chassey">
+<title>oGame chat</title>
+<link rel="stylesheet"
+	href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/chat.css" />
+
+</head>
+<body>
+	<header>
+		<img align="left" id="image" alt="oGame" src="img/ogame.jpg"
+			class="img-responsive img-rounded">
+		<h1>
+			<b class="white">oGame</b>, parlons-en ici
+		</h1>
+		<h2>
+			<a target="_blank" href="http://games.julesmoreau.eu/" id="link">Lien
+				du jeu</a> <small>(merci Julio)</small>
+		</h2>
+		<h3 id="status"></h3>
+	</header>
+
+	<div class="wrapper">
+		<nav id="navigation"></nav>
+		<div class="subwrapper">
+			<section class="content"></section>
+			<footer>
+				<form>
+					<div class="input-group">
+						<input type="text" class="form-control" id="message"
+							autocomplete="off" autofocus> <span
+							class="input-group-btn"> <input type="submit" id="submit"
+							class="btn btn-info" value="Envoyer" disabled />
+						</span>
+					</div>
+
+				</form>
+
+			</footer>
+		</div>
+	</div>
+
+	<script src="webjars/jquery/2.2.4/jquery.min.js"></script>
+	<script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+	<script src="webjars/bootbox/4.4.0/bootbox.js"></script>
+	<script src="js/sockets.js"></script>
+	<script src="js/chat.js"></script>
+</body>
+</html>

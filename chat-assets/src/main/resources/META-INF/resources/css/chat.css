@@ -1,0 +1,189 @@
+/* Layout */
+html {
+	display: flex;
+	flex-direction: column;
+} /* IE fix */
+body {
+	display: flex; /* crée un contexte flex pour ses enfants */
+	flex-direction: column; /* affichage vertical */
+	min-height: 100vh; /* toute la hauteur du viewport (compatible IE9+) */
+}
+
+.wrapper {
+	display: block; /* IE fix */
+	flex: 1 1 auto; /* occupe la hauteur restante */
+	display: flex; /* crée un contexte flex pour ses enfants */
+	flex-direction: row; /* affichage horizontal */
+}
+
+.subwrapper {
+	display: block; /* IE fix */
+	flex: 10; /* occupe la hauteur restante */
+	display: flex; /* crée un contexte flex pour ses enfants */
+	flex-direction: column; /* affichage horizontal */
+}
+
+nav {
+	flex: 3;
+}
+
+.content {
+	display: block; /* IE fix */
+	flex: 1; /* occupe la largeur restante */
+}
+
+h3 small {
+	font-size: 60%;
+	color: #999;
+	padding-left: 20px;
+}
+
+footer {
+	height: 50px;
+}
+
+body {
+	margin: 0;
+	background: #000;
+	font-family: "Century Gothic", helvetica, arial, sans-serif;
+	font-size: 1.1em;
+}
+
+header, nav, section, footer {
+	padding: 10px;
+	margin: 5px;
+	border: 0px solid #fff;
+	color: #fff;
+}
+
+header {
+	background: #000;
+	color: dodgerblue;
+	border-bottom: 2px solid dodgerblue;
+	text-align: center;
+}
+
+nav {
+	background: #000;
+	/* color: #333; */
+	color: #f1f1f1;
+	border-right: 2px solid #ffffff;
+	text-align: center;
+	border-radius: 0;
+}
+
+nav a {
+	display: block;
+	padding: .5em 1em;
+	color: #f1f1f1;
+	text-decoration: none;
+	border-bottom: 1px solid dodgerblue;
+}
+
+section {
+	overflow-y: scroll;
+	overflow: hidden;
+	height: 365px;
+	background: #000;
+	overflow-y: auto;
+	color: #f1f1f1;
+	border: 2px solid #ffffff;
+	border-radius: 8px;
+}
+
+section .pseudo {
+	color: dodgerblue;
+}
+
+.white {
+	color: #f1f1f1;
+}
+
+a:hover {
+	color: #f1f1f1;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#link:hover {
+	color: #f1f1f1;
+	cursor: pointer;
+	font-weight: normal;
+}
+
+#image {
+	max-width: 300px;
+	max-height: 250px;
+	display: inline-block;
+}
+
+/* 
+footer {
+	background: dodgerblue;
+	display: flex;
+	padding: 2px;
+}
+
+footer form {
+	display: flex;
+	flex: 1;
+	margin: 0;
+}
+
+footer form input[type=text] {
+	flex: 10;
+	border: 0;
+	resize: none;
+	padding: 10px;
+}
+
+footer form input[type=submit] {
+	flex: 2;
+	border: 0;
+	background: #fff;
+	color: dodgerblue;
+	border-left: 2px solid dodgerblue;
+} */
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 7px;
+	height: 7px;
+}
+
+::-webkit-scrollbar-button {
+	width: 0px;
+	height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #1e90ff;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background: #ffffff;
+}
+
+::-webkit-scrollbar-track {
+	background: #666666;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-track:hover {
+	background: #666666;
+}
+
+::-webkit-scrollbar-track:active {
+	background: #333333;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
