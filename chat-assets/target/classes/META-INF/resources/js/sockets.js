@@ -16,7 +16,7 @@ function doSockets(pseudo) {
 		}, 1000);
 		ws.send(JSON.stringify({
 			type : "connect",
-			pseudo : pseudo,
+			pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
 			message : undefined
 		}));
 	};
@@ -41,11 +41,18 @@ function doSockets(pseudo) {
 						+ "</small></h4>");
 				div.append("<p>" + message.messages[i].message + "</p>");
 				$(".content").append(div);
-				$('.content').scrollTop($('.content').prop("scrollHeight"));
+				setTimeout(
+						function() {
+							$('.content').scrollTop(
+									$('.content').prop("scrollHeight"));
+						}, 1000);
 			}
 		}
 		// Get new message
 		else {
+			if (message.pseudo != pseudo && message.pseudo != "Admin")
+				$
+						.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724");
 			var div = $("<div>");
 			div.append("<h4 class='pseudo'>" + message.pseudo
 					+ "<small class='date'>" + message.date + "</small></h4>");
@@ -87,7 +94,8 @@ function doSockets(pseudo) {
 					var message = {
 						type : "message",
 						pseudo : pseudo,
-						message : $("#message").val(),
+						message : $("#message").val().replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;"),
 						date : time
 					};
 					$("#message").val("")
@@ -107,3 +115,15 @@ function setPseudo(pseudo) {
 		message : undefined
 	}));
 }
+
+ion.sound({
+	sounds : [ {
+		name : "button_tiny"
+	} ],
+
+	// main config
+	path : "sounds/",
+	preload : true,
+	multiplay : true,
+	volume : 0.5
+});

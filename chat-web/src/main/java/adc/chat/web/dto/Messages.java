@@ -3,6 +3,8 @@ package adc.chat.web.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import adc.chat.web.util.StringVerification;
+
 public class Messages {
 
 	private class Message {
@@ -21,13 +23,14 @@ public class Messages {
 
 	public void addMessage(String message, String type, String pseudo, String date) {
 		Message newMessage = new Message();
-		newMessage.message = message;
-		newMessage.type = type;
-		newMessage.pseudo = pseudo;
-		newMessage.date = date;
+		newMessage.message = StringVerification.removeIllegal(message);
+		newMessage.type = StringVerification.removeIllegal(type);
+		newMessage.pseudo = StringVerification.removeIllegal(pseudo);
+		newMessage.date = StringVerification.removeIllegal(date);
+
 		messages.add(newMessage);
-		// Keep only 50 messages
-		if (messages.size() >= 50) {
+		// Keep only 100 messages
+		if (messages.size() >= 100) {
 			messages = messages.subList(messages.size() - 5, messages.size());
 		}
 	}

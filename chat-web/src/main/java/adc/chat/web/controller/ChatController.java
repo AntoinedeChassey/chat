@@ -41,7 +41,7 @@ public class ChatController {
 	private static Pseudos pseudos = new Pseudos();
 	private static Messages messages = new Messages();
 
-	Pattern pattern = Pattern.compile("@\\w+");
+	Pattern pattern = Pattern.compile("@\\\\+");
 
 	@OnOpen
 	public void onOpen(Session s) {
@@ -54,10 +54,10 @@ public class ChatController {
 		pseudos.deletePseudo(s.getId());
 		broadcast(pseudos, s);
 	}
-	
+
 	@OnError
 	public void onError(Throwable t) {
-//		t.printStackTrace();
+		// t.printStackTrace();
 		System.err.println("onError");
 	}
 
