@@ -22,18 +22,20 @@ $(document).ready(function() {
 					expires : 30
 				});
 				// Build the connection
-				doSockets(result);
+				pseudo = result;
+				doSockets();
 			}
 		}
 	};
-
-	var pseudo = Cookies.get('pseudo');
+	
+	// Try to get the last saved value
+	pseudo = Cookies.get('pseudo');
 
 	if (!pseudo) {
 		bootbox.prompt(promptOptions);
 	} else {
 		// Build the connection
-		doSockets(pseudo);
+		doSockets();
 	}
 
 	promptOptionsSetPseudo = {
@@ -49,6 +51,7 @@ $(document).ready(function() {
 				Cookies.set('pseudo', result, {
 					expires : 30
 				});
+				pseudo = result;
 				setPseudo(result);
 			}
 		}

@@ -4,8 +4,9 @@ var urlParts = url.split("/");
 urlParts.pop();
 var newUrl = urlParts.join("/") + "/control";
 var ws;
+var pseudo;
 
-function doSockets(pseudo) {
+function doSockets() {
 	ws = new WebSocket(newUrl);
 
 	ws.onopen = function() {
@@ -97,7 +98,6 @@ function doSockets(pseudo) {
 								.replace(/>/g, "&gt;"),
 						date : time
 					};
-					$("#message").val("")
 					$("#submit").attr("disabled", "disabled");
 					ws.send(JSON.stringify(message));
 					return false;
@@ -107,10 +107,10 @@ function doSockets(pseudo) {
 			});
 }
 
-function setPseudo(pseudo) {
+function setPseudo(newPseudo) {
 	ws.send(JSON.stringify({
 		type : "setPseudo",
-		pseudo : pseudo,
+		pseudo : newPseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
 		message : undefined
 	}));
 }
