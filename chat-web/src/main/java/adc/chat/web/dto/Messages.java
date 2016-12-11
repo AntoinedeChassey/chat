@@ -9,6 +9,7 @@ public class Messages {
 		public String message;
 		public String type;
 		public String pseudo;
+		public String date;
 	}
 
 	private List<Message> messages;
@@ -18,12 +19,17 @@ public class Messages {
 		messages = new ArrayList<>();
 	}
 
-	public void addMessage(String message, String type, String pseudo) {
+	public void addMessage(String message, String type, String pseudo, String date) {
 		Message newMessage = new Message();
 		newMessage.message = message;
 		newMessage.type = type;
 		newMessage.pseudo = pseudo;
+		newMessage.date = date;
 		messages.add(newMessage);
+		// Keep only 50 messages
+		if (messages.size() >= 50) {
+			messages = messages.subList(messages.size() - 5, messages.size());
+		}
 	}
 
 	public List<Message> getMessages() {

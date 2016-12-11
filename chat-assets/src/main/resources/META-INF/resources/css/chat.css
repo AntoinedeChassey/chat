@@ -104,6 +104,10 @@ section .pseudo {
 	color: #f1f1f1;
 }
 
+.date{
+	margin-left: 15px;
+}
+
 a:hover {
 	color: #f1f1f1;
 	cursor: pointer;

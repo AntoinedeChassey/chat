@@ -25,6 +25,17 @@ public class Pseudos {
 		pseudos.add(newPseudo);
 	}
 
+	public void setPseudo(String pseudo, String id) {
+		// Remove old pseudo
+		for (Pseudo p : pseudos) {
+			if (p.id == id) {
+				deletePseudo(id);
+				break;
+			}
+		}
+		addPseudo(pseudo, id);
+	}
+
 	public void deletePseudo(String id) {
 		pseudos = pseudos.stream().filter(p -> !p.id.equals(id)).collect(Collectors.toList());
 	}

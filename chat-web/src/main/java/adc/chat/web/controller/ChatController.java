@@ -1,7 +1,11 @@
 package adc.chat.web.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -50,45 +54,63 @@ public class ChatController {
 		pseudos.deletePseudo(s.getId());
 		broadcast(pseudos, s);
 	}
+	
+	@OnError
+	public void onError(Throwable t) {
+//		t.printStackTrace();
+		System.err.println("onError");
+	}
 
 	@OnMessage
 	public void message(Message message, Session s) throws IOException, EncodeException {
-		// At first connection
 		if (message.getType().equals("connect")) {
-			Message welcomeMessage = new Message();
-			welcomeMessage.setMessage("Bienvenue dans le chat <b>" + message.getPseudo() + "</b>!");
-			welcomeMessage.setType("welcome");
-			welcomeMessage.setPseudo("Admin");
-			s.getBasicRemote().sendObject(welcomeMessage);
+			Message callback = new Message();
+			callback.setMessage("Bienvenue dans le chat <b>" + message.getPseudo() + "</b>!");
+			callback.setType("callback");
+			callback.setPseudo("Admin");
+			DateFormat df = new SimpleDateFormat("HH:mm:ss");
+			Date today = Calendar.getInstance().getTime();
+			String now = df.format(today);
+			callback.setDate(now);
+			s.getBasicRemote().sendObject(callback);
 			s.getBasicRemote().sendObject(messages);
 
 			pseudos.addPseudo(message.getPseudo(), s.getId());
 			broadcast(pseudos, s);
+
+		} else if (message.getType().equals("setPseudo")) {
+			Message callback = new Message();
+			callback.setMessage("Pseudo modifié avec succès: <b>" + message.getPseudo() + "</b>!");
+			callback.setType("callback");
+			callback.setPseudo("Admin");
+			s.getBasicRemote().sendObject(callback);
+			s.getBasicRemote().sendObject(messages);
+
+			pseudos.setPseudo(message.getPseudo(), s.getId());
+			broadcast(pseudos, s);
+
 		} else if (message.getType().equals("message")) {
 			// Show message only to a specific id
-//			Matcher matcher = pattern.matcher(message.getMessage());
-//			boolean matched = false;
-//			while (matcher.find()) {
-//				matched = true;
-//				String sessionId = pseudos.getSessionId(matcher.group().substring(1));
-//				if (sessionId != null) {
-//					for (Session session : s.getOpenSessions()) {
-//						if (session.getId().equals(sessionId)) {
-//							session.getBasicRemote().sendObject(message);
-//						}
-//					}
-//				}
-//				if (!matched) {
-					messages.addMessage(message.getMessage(), message.getType(), message.getPseudo());
-					broadcast(message, s);
-//				}
-//			}
-		}
-	}
+			// Matcher matcher = pattern.matcher(message.getMessage());
+			// boolean matched = false;
+			// while (matcher.find()) {
+			// matched = true;
+			// String sessionId =
+			// pseudos.getSessionId(matcher.group().substring(1));
+			// if (sessionId != null) {
+			// for (Session session : s.getOpenSessions()) {
+			// if (session.getId().equals(sessionId)) {
+			// session.getBasicRemote().sendObject(message);
+			// }
+			// }
+			// }
+			// if (!matched) {
 
-	@OnError
-	public void onError(Throwable t) {
-		t.printStackTrace();
+			messages.addMessage(message.getMessage(), message.getType(), message.getPseudo(), message.getDate());
+			broadcast(message, s);
+			// }
+			// }
+		}
 	}
 
 	private void broadcast(Object objet, Session s) {

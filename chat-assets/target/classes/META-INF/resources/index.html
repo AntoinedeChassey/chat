@@ -11,6 +11,7 @@
 	href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="webjars/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="webjars/toastr/2.1.2/build/toastr.min.css" />
 <link rel="stylesheet" href="css/chat.css" />
 
 </head>
@@ -22,22 +23,20 @@
 			<b class="white">oGame</b>, parlons-en ici
 		</h1>
 		<h2>
-			<a target="_blank" href="http://games.julesmoreau.eu/game.php?page=overview" id="link">Lien
+			<a target="_blank"
+				href="http://games.julesmoreau.eu/game.php?page=overview" id="link">Lien
 				du jeu</a> <small>(merci Julio)</small>
 		</h2>
-		<h3 id="status"></h3>
+		<div class="pull-right" id="setPseudo">
+			<i class="fa fa-cog fa-spin fa-fw"></i> <span class="sr-only"></span>
+			Changer de pseudo
+		</div>
 	</header>
-
+	
 	<div class="wrapper">
 		<nav id="navigation"></nav>
 		<div class="subwrapper">
-			<section class="content">
-				<div class="pull-right" id="setPseudo">
-					<i class="fa fa-cog fa-spin fa-fw"></i> <span class="sr-only"></span>
-					Changer de pseudo
-					<!-- <i class="fa fa-cog" aria-hidden="true"></i> Changer de pseudo -->
-				</div>
-			</section>
+			<section class="content"></section>
 			<footer>
 				<form>
 					<div class="input-group">
@@ -58,6 +57,7 @@
 	<script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 	<script src="webjars/bootbox/4.4.0/bootbox.js"></script>
 	<script src="webjars/js-cookie/2.0.3/src/js.cookie.js"></script>
+	<script src="webjars/toastr/2.1.2/build/toastr.min.js"></script>
 	<script src="js/sockets.js"></script>
 	<script src="js/chat.js"></script>
 </body>
