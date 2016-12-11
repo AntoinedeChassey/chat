@@ -32,6 +32,11 @@ nav {
 	flex: 1; /* occupe la largeur restante */
 }
 
+#setPseudo:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 h3 small {
 	font-size: 60%;
 	color: #999;

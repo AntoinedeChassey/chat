@@ -65,29 +65,25 @@ public class ChatController {
 			pseudos.addPseudo(message.getPseudo(), s.getId());
 			broadcast(pseudos, s);
 		} else if (message.getType().equals("message")) {
-			// Show message only for the id of the user connected
-			// Matcher matcher = pattern.matcher(message.getMessage());
-			// boolean matched = false;
-			// while (matcher.find()) {
-			// matched = true;
-			// String sessionId =
-			// pseudos.getSessionId(matcher.group().substring(1));
-			// if (sessionId != null) {
-			// for (Session session : s.getOpenSessions()) {
-			// if (session.getId().equals(sessionId)) {
-			// session.getBasicRemote().sendObject(message);
-			// }
-			// }
-			// }
-			messages.addMessage(message.getMessage(), message.getType(), message.getPseudo());
-			broadcast(message, s);
+			// Show message only to a specific id
+//			Matcher matcher = pattern.matcher(message.getMessage());
+//			boolean matched = false;
+//			while (matcher.find()) {
+//				matched = true;
+//				String sessionId = pseudos.getSessionId(matcher.group().substring(1));
+//				if (sessionId != null) {
+//					for (Session session : s.getOpenSessions()) {
+//						if (session.getId().equals(sessionId)) {
+//							session.getBasicRemote().sendObject(message);
+//						}
+//					}
+//				}
+//				if (!matched) {
+					messages.addMessage(message.getMessage(), message.getType(), message.getPseudo());
+					broadcast(message, s);
+//				}
+//			}
 		}
-		// if (!matched) {
-		// messages.addMessage(message.getMessage(), message.getType(),
-		// message.getPseudo());
-		// broadcast(message, s);
-		// }
-		// }
 	}
 
 	@OnError
@@ -96,8 +92,8 @@ public class ChatController {
 	}
 
 	private void broadcast(Object objet, Session s) {
-//		Set<Session> sessionsOuvertes = s.getOpenSessions();
-//		System.out.println("Nombre de sessions: " + sessions.size());
+		// Set<Session> sessionsOuvertes = s.getOpenSessions();
+		// System.out.println("Nombre de sessions: " + sessions.size());
 		for (Session session : sessions) {
 			if (session.isOpen()) {
 				try {

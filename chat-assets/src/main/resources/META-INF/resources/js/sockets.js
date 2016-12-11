@@ -1,6 +1,6 @@
 function doSockets(pseudo) {
 	var url = window.location.origin + window.location.pathname;
-	url = url.replace("https", "wss")
+	url = url.replace("http", "ws")
 	var urlParts = url.split("/");
 	urlParts.pop();
 	var newUrl = urlParts.join("/") + "/control";
@@ -23,7 +23,7 @@ function doSockets(pseudo) {
 
 	ws.onmessage = function(evt) {
 		var message = JSON.parse(evt.data);
-		console.log(message);
+//		console.log(message);
 		var pseudosList = $("#navigation");
 		if (message.pseudos) {
 			pseudosList.text("");
