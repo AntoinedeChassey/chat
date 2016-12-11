@@ -1,5 +1,5 @@
 var url = window.location.origin + window.location.pathname;
-url = url.replace("http", "ws")
+url = url.replace("https", "wss")
 var urlParts = url.split("/");
 urlParts.pop();
 var newUrl = urlParts.join("/") + "/control";
@@ -51,8 +51,7 @@ function doSockets(pseudo) {
 		// Get new message
 		else {
 			if (message.pseudo != pseudo && message.pseudo != "Admin")
-				$
-						.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724");
+				ion.sound.play("button_tiny");
 			var div = $("<div>");
 			div.append("<h4 class='pseudo'>" + message.pseudo
 					+ "<small class='date'>" + message.date + "</small></h4>");
