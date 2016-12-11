@@ -12,9 +12,10 @@ function doSockets() {
 	ws.onopen = function() {
 		console.log("Connecte en Websockets !");
 		toastr.success("Connected");
-		$(".content").animate({
-			scrollTop : $('.content').prop("scrollHeight")
-		}, 1000);
+		$(".content").empty();
+//		$(".content").animate({
+//			scrollTop : $('.content').prop("scrollHeight")
+//		}, 1000);
 		ws.send(JSON.stringify({
 			type : "connect",
 			pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),

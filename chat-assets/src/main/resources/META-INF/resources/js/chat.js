@@ -30,7 +30,7 @@ $(document).ready(function() {
 	
 	// Try to get the last saved value
 	pseudo = Cookies.get('pseudo');
-
+	
 	if (!pseudo) {
 		bootbox.prompt(promptOptions);
 	} else {
