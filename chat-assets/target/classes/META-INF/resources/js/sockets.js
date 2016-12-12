@@ -13,9 +13,9 @@ function doSockets() {
 		console.log("Connecte en Websockets !");
 		toastr.success("Connected");
 		$(".content").empty();
-//		$(".content").animate({
-//			scrollTop : $('.content').prop("scrollHeight")
-//		}, 1000);
+		// $(".content").animate({
+		// scrollTop : $('.content').prop("scrollHeight")
+		// }, 1000);
 		ws.send(JSON.stringify({
 			type : "connect",
 			pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
@@ -30,7 +30,9 @@ function doSockets() {
 		if (message.pseudos) {
 			pseudosList.text("");
 			for (var i = 0; i < message.pseudos.length; i++) {
-				var element = $("<a></a>").text(message.pseudos[i].pseudo);
+				var element = $("<a></a>").text(
+						message.pseudos[i].pseudo.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;"));
 				pseudosList.append(element);
 			}
 		}
@@ -38,10 +40,15 @@ function doSockets() {
 		else if (message.messages) {
 			for (var i = 0; i < message.messages.length; i++) {
 				var div = $("<div>");
-				div.append("<h4 class='pseudo'>" + message.messages[i].pseudo
-						+ "<small class='date'>" + message.messages[i].date
-						+ "</small></h4>");
-				div.append("<p>" + message.messages[i].message + "</p>");
+				div.append("<h4 class='pseudo'>"
+						+ message.messages[i].pseudo.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;")
+						+ "<small class='date'>"
+						+ message.messages[i].date.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;") + "</small></h4>");
+				div.append("<p>"
+						+ message.messages[i].message.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;") + "</p>");
 				$(".content").append(div);
 				setTimeout(
 						function() {
@@ -55,9 +62,14 @@ function doSockets() {
 			if (message.pseudo != pseudo && message.pseudo != "Admin")
 				ion.sound.play("button_tiny");
 			var div = $("<div>");
-			div.append("<h4 class='pseudo'>" + message.pseudo
-					+ "<small class='date'>" + message.date + "</small></h4>");
-			div.append("<p>" + message.message + "</p>");
+			div.append("<h4 class='pseudo'>"
+					+ message.pseudo.replace(/</g, "&lt;")
+							.replace(/>/g, "&gt;") + "<small class='date'>"
+					+ message.date.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+					+ "</small></h4>");
+			div.append("<p>"
+					+ message.message.replace(/</g, "&lt;").replace(/>/g,
+							"&gt;") + "</p>");
 			$(".content").append(div);
 			$('.content').scrollTop($('.content').prop("scrollHeight"));
 		}
@@ -94,11 +106,13 @@ function doSockets() {
 							+ now.getSeconds();
 					var message = {
 						type : "message",
-						pseudo : pseudo,
+						pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g,
+								"&gt;"),
 						message : $("#message").val().replace(/</g, "&lt;")
 								.replace(/>/g, "&gt;"),
-						date : time
+						date : time.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 					};
+					$("#message").val("");
 					$("#submit").attr("disabled", "disabled");
 					ws.send(JSON.stringify(message));
 					return false;
