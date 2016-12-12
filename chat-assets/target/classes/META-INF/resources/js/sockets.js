@@ -1,5 +1,5 @@
 var url = window.location.origin + window.location.pathname;
-url = url.replace("https", "wss")
+url = url.replace("http", "ws")
 var urlParts = url.split("/");
 urlParts.pop();
 var newUrl = urlParts.join("/") + "/control";
@@ -21,7 +21,7 @@ function doSockets() {
 				this.close();
 			}
 		});
-		
+
 		// $(".content").animate({
 		// scrollTop : $('.content').prop("scrollHeight")
 		// }, 1000);
@@ -64,7 +64,7 @@ function doSockets() {
 				ion.sound.play("button_tiny");
 				// Push notification
 				Push.create(message.pseudo, {
-					body : message.message,
+					body : reverseEncoding(message.message),
 					icon : 'img/planete.png',
 					timeout : 4000,
 					onClick : function() {
@@ -148,3 +148,40 @@ ion.sound({
 	multiplay : true,
 	volume : 0.5
 });
+
+function reverseEncoding(texte) {
+	texte = texte.replace(/&egrave;/g, 'è');
+	texte = texte.replace(/&eacute;/g, 'é');
+	texte = texte.replace(/&ecirc;/g, 'ê');
+	texte = texte.replace(/&euml;/g, 'ë');
+
+	texte = texte.replace(/&agrave;/g, 'à');
+	texte = texte.replace(/&acirc;/g, 'ä');
+	texte = texte.replace(/&auml;/g, 'â');
+
+	texte = texte.replace(/&ograve;/g, 'ò');
+	texte = texte.replace(/&ocirc;/g, 'ô');
+	texte = texte.replace(/&ouml;/g, 'ö');
+
+	texte = texte.replace(/&igrave;/g, 'ì');
+	texte = texte.replace(/&icirc;/g, 'î');
+	texte = texte.replace(/&iuml;/g, 'ï');
+
+	texte = texte.replace(/&ugrave;/g, 'ù');
+	texte = texte.replace(/&uuml;/g, 'ü');
+	texte = texte.replace(/&ucirc;/g, 'û');
+
+	texte = texte.replace(/&apos;/g, "'");
+	texte = texte.replace(/&quot;/g, '"');
+	texte = texte.replace(/&uml;/g, "¨");
+	texte = texte.replace(/&deg;/g, "°");
+	texte = texte.replace(/&amp;/g, "&");
+	
+	texte = texte.replace(/&ccedil;/g, "ç");
+	
+	texte = texte.replace(/&sect;/g, "§");
+	texte = texte.replace(/&pound;/g, "£");
+	texte = texte.replace(/&curren;/g, "¤");
+	texte = texte.replace(/&micro;/g, "µ");
+	return texte;
+}
