@@ -35,13 +35,13 @@ nav {
 
 #setPseudo {
 	font-size: 14px;
-	color: #FF2424;
+	color: #FA5656;
 	font-weight: bold;
 	color: #FF2424;
 }
 
 #setPseudo:hover {
-	color: #FA5656;
+	color: #FF2424;
 	text-decoration: underline;
 	cursor: pointer;
 }
