@@ -11,7 +11,16 @@ function doSockets() {
 
 	ws.onopen = function() {
 		console.log("Connecte en Websockets !");
-		toastr.success("Connected");
+		// Push notification
+		Push.create("Status of transmission", {
+			body : "Connected",
+			icon : 'img/planete.png',
+			timeout : 2000,
+			onClick : function() {
+				window.focus();
+				this.close();
+			}
+		});
 		$(".content").empty();
 		// $(".content").animate({
 		// scrollTop : $('.content').prop("scrollHeight")
@@ -31,8 +40,7 @@ function doSockets() {
 		if (message.pseudos) {
 			pseudosList.text("");
 			for (var i = 0; i < message.pseudos.length; i++) {
-				var element = $("<a></a>").text(
-						message.pseudos[i].pseudo);
+				var element = $("<a></a>").text(message.pseudos[i].pseudo);
 				pseudosList.append(element);
 			}
 		}
@@ -40,12 +48,9 @@ function doSockets() {
 		else if (message.messages) {
 			for (var i = 0; i < message.messages.length; i++) {
 				var div = $("<div>");
-				div.append("<h4 class='pseudo'>"
-						+ message.messages[i].pseudo
-						+ "<small class='date'>"
-						+ message.messages[i].date);
-				div.append("<p>"
-						+ message.messages[i].message);
+				div.append("<h4 class='pseudo'>" + message.messages[i].pseudo
+						+ "<small class='date'>" + message.messages[i].date);
+				div.append("<p>" + message.messages[i].message);
 				$(".content").append(div);
 				setTimeout(
 						function() {
@@ -56,15 +61,23 @@ function doSockets() {
 		}
 		// Get new message
 		else {
-			if (message.pseudo != pseudo && message.pseudo != "Admin")
+			if (message.pseudo != pseudo && message.pseudo != "Admin") {
 				ion.sound.play("button_tiny");
+				// Push notification
+				Push.create(message.pseudo, {
+					body : message.message,
+					icon : 'img/planete.png',
+					timeout : 4000,
+					onClick : function() {
+						window.focus();
+						this.close();
+					}
+				});
+			}
 			var div = $("<div>");
-			div.append("<h4 class='pseudo'>"
-					+ message.pseudo + "<small class='date'>"
-					+ message.date
-					+ "</small></h4>");
-			div.append("<p>"
-					+ message.message);
+			div.append("<h4 class='pseudo'>" + message.pseudo
+					+ "<small class='date'>" + message.date + "</small></h4>");
+			div.append("<p>" + message.message);
 			$(".content").append(div);
 			$('.content').scrollTop($('.content').prop("scrollHeight"));
 		}
@@ -76,14 +89,16 @@ function doSockets() {
 	});
 
 	ws.onclose = function() {
-		toastr.options = {
-			onclick : function() {
-				location.reload();
+		// Push notification
+		Push.create("Status of transmission", {
+			body : "Disconnected",
+			icon : 'img/planete.png',
+			timeout : 0,
+			onClick : function() {
+				window.focus();
+				this.close();
 			}
-		}
-		toastr.options.extendedTimeOut = 0;
-		toastr.options.timeOut = 0;
-		toastr.error("Disconnected");
+		});
 		console.log("Connexion terminée");
 	};
 
