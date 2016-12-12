@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import adc.chat.web.util.StringVerification;
-
 public class Pseudos {
 
 	public class Pseudo {
@@ -22,8 +20,8 @@ public class Pseudos {
 
 	public void addPseudo(String pseudo, String id) {
 		Pseudo newPseudo = new Pseudo();
-		newPseudo.pseudo = StringVerification.removeIllegal(pseudo);
-		newPseudo.id = StringVerification.removeIllegal(id);
+		newPseudo.pseudo = pseudo;
+		newPseudo.id = id;
 		pseudos.add(newPseudo);
 	}
 

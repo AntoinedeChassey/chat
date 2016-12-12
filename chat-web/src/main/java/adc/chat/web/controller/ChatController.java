@@ -25,6 +25,7 @@ import adc.chat.web.provider.MessageDecoder;
 import adc.chat.web.provider.MessageEncoder;
 import adc.chat.web.provider.MessagesEncoder;
 import adc.chat.web.provider.PseudosEncoder;
+import adc.chat.web.security.Security;
 
 /**
  * https://netbeans.org/kb/docs/javaee/maven-websocketapi.html
@@ -63,6 +64,7 @@ public class ChatController {
 
 	@OnMessage
 	public void message(Message message, Session s) throws IOException, EncodeException {
+		message = Security.sanitizeMessage(message);
 		if (message.getType().equals("connect")) {
 			Message callback = new Message();
 			callback.setMessage("Bienvenue dans le chat <b>" + message.getPseudo() + "</b>!");
@@ -110,6 +112,7 @@ public class ChatController {
 			// }
 			// }
 		}
+
 	}
 
 	private void broadcast(Object objet, Session s) {

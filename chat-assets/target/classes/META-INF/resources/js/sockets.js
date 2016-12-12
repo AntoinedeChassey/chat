@@ -18,7 +18,8 @@ function doSockets() {
 		// }, 1000);
 		ws.send(JSON.stringify({
 			type : "connect",
-			pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+			pseudo : pseudo,
+			// .replace(/</g, "&lt;").replace(/>/g, "&gt;")
 			message : undefined
 		}));
 	};
@@ -31,8 +32,7 @@ function doSockets() {
 			pseudosList.text("");
 			for (var i = 0; i < message.pseudos.length; i++) {
 				var element = $("<a></a>").text(
-						message.pseudos[i].pseudo.replace(/</g, "&lt;")
-								.replace(/>/g, "&gt;"));
+						message.pseudos[i].pseudo);
 				pseudosList.append(element);
 			}
 		}
@@ -41,14 +41,11 @@ function doSockets() {
 			for (var i = 0; i < message.messages.length; i++) {
 				var div = $("<div>");
 				div.append("<h4 class='pseudo'>"
-						+ message.messages[i].pseudo.replace(/</g, "&lt;")
-								.replace(/>/g, "&gt;")
+						+ message.messages[i].pseudo
 						+ "<small class='date'>"
-						+ message.messages[i].date.replace(/</g, "&lt;")
-								.replace(/>/g, "&gt;") + "</small></h4>");
+						+ message.messages[i].date);
 				div.append("<p>"
-						+ message.messages[i].message.replace(/</g, "&lt;")
-								.replace(/>/g, "&gt;") + "</p>");
+						+ message.messages[i].message);
 				$(".content").append(div);
 				setTimeout(
 						function() {
@@ -63,13 +60,11 @@ function doSockets() {
 				ion.sound.play("button_tiny");
 			var div = $("<div>");
 			div.append("<h4 class='pseudo'>"
-					+ message.pseudo.replace(/</g, "&lt;")
-							.replace(/>/g, "&gt;") + "<small class='date'>"
-					+ message.date.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+					+ message.pseudo + "<small class='date'>"
+					+ message.date
 					+ "</small></h4>");
 			div.append("<p>"
-					+ message.message.replace(/</g, "&lt;").replace(/>/g,
-							"&gt;") + "</p>");
+					+ message.message);
 			$(".content").append(div);
 			$('.content').scrollTop($('.content').prop("scrollHeight"));
 		}
@@ -106,11 +101,9 @@ function doSockets() {
 							+ now.getSeconds();
 					var message = {
 						type : "message",
-						pseudo : pseudo.replace(/</g, "&lt;").replace(/>/g,
-								"&gt;"),
-						message : $("#message").val().replace(/</g, "&lt;")
-								.replace(/>/g, "&gt;"),
-						date : time.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+						pseudo : pseudo,
+						message : $("#message").val(),
+						date : time
 					};
 					$("#message").val("");
 					$("#submit").attr("disabled", "disabled");
@@ -125,7 +118,7 @@ function doSockets() {
 function setPseudo(newPseudo) {
 	ws.send(JSON.stringify({
 		type : "setPseudo",
-		pseudo : newPseudo.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+		pseudo : newPseudo,
 		message : undefined
 	}));
 }
