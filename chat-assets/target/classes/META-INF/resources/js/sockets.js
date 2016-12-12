@@ -15,20 +15,19 @@ function doSockets() {
 		Push.create("Status of transmission", {
 			body : "Connected",
 			icon : 'img/planete.png',
-			timeout : 2000,
+			timeout : 3000,
 			onClick : function() {
 				window.focus();
 				this.close();
 			}
 		});
-		$(".content").empty();
+		
 		// $(".content").animate({
 		// scrollTop : $('.content').prop("scrollHeight")
 		// }, 1000);
 		ws.send(JSON.stringify({
 			type : "connect",
 			pseudo : pseudo,
-			// .replace(/</g, "&lt;").replace(/>/g, "&gt;")
 			message : undefined
 		}));
 	};
