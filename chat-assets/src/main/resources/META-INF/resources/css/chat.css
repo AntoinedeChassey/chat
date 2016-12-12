@@ -2,6 +2,7 @@
 html {
 	display: flex;
 	flex-direction: column;
+	display: flex;
 } /* IE fix */
 body {
 	display: flex; /* crée un contexte flex pour ses enfants */
@@ -32,7 +33,15 @@ nav {
 	flex: 1; /* occupe la largeur restante */
 }
 
+#setPseudo {
+	font-size: 14px;
+	color: #FF2424;
+	font-weight: bold;
+	color: #FF2424;
+}
+
 #setPseudo:hover {
+	color: #FA5656;
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -49,9 +58,12 @@ footer {
 
 body {
 	margin: 0;
-	background: #000;
+	/* background: #000; */
+	background-image: url("../img/background.jpg");
+	background-size: cover;
 	font-family: "Century Gothic", helvetica, arial, sans-serif;
 	font-size: 1.1em;
+	background-size: cover;
 }
 
 header, nav, section, footer {
@@ -62,14 +74,14 @@ header, nav, section, footer {
 }
 
 header {
-	background: #000;
+	/* background: #000; */
 	color: dodgerblue;
 	border-bottom: 2px solid dodgerblue;
 	text-align: center;
 }
 
 nav {
-	background: #000;
+	/* background: #000; */
 	/* color: #333; */
 	color: #f1f1f1;
 	border-right: 2px solid #ffffff;
@@ -89,7 +101,6 @@ section {
 	overflow-y: scroll;
 	overflow: hidden;
 	height: 365px;
-	background: #000;
 	overflow-y: auto;
 	color: #f1f1f1;
 	border: 2px solid #ffffff;
@@ -104,7 +115,7 @@ section .pseudo {
 	color: #f1f1f1;
 }
 
-.date{
+.date {
 	margin-left: 15px;
 }
 
