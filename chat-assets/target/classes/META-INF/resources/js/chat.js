@@ -44,7 +44,7 @@ $(document)
 
 					// Try to get the last saved value
 					pseudo = Cookies.get('pseudo');
-					
+
 					if (!pseudo || pseudo === "undefined") {
 						bootbox.prompt(promptOptions);
 					} else {
@@ -75,7 +75,8 @@ $(document)
 						title : "Nombre de messages à voir? (1000 max)",
 						inputType : 'number',
 						callback : function(result) {
-							getHistory(result);
+							if (result)
+								getHistory(result);
 						}
 					};
 

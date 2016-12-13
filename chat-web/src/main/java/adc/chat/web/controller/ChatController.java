@@ -23,8 +23,8 @@ import org.mongodb.morphia.Datastore;
 
 import com.google.gson.Gson;
 
-import adc.chat.web.dao.impl.MongoDBJDBC;
 import adc.chat.web.dto.Message;
+import adc.chat.web.dto.MongoDBJDBC;
 import adc.chat.web.dto.Pseudos;
 import adc.chat.web.provider.MessageEncoderDecoder;
 import adc.chat.web.provider.MessagesEncoder;
@@ -97,8 +97,9 @@ public class ChatController {
 			callback.setDate(now);
 			s.getBasicRemote().sendObject(callback);
 		} else if (message.getType().equals("getHistory")) {
-			List<Message> messages = db.createQuery(Message.class).order("-_id")
-					.limit(Integer.parseInt(message.getMessage())).asList();
+			Integer number = Integer.parseInt(message.getMessage());
+			number = number.equals(null) ? 0 : number;
+			List<Message> messages = db.createQuery(Message.class).order("-_id").limit(number).asList();
 			Collections.reverse(messages);
 			s.getBasicRemote().sendObject(messages);
 

@@ -1,4 +1,4 @@
-package adc.chat.web.dao.impl;
+package adc.chat.web.dto;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
