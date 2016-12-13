@@ -92,6 +92,10 @@ $(document)
 						e.preventDefault();
 						bootbox.prompt(promptOptionsGetHistory);
 					});
+					$("#pushSpace").click(function(e) {
+						e.preventDefault();
+						pushSpace();
+					});
 					$("#setScroll")
 							.click(
 									function(e) {

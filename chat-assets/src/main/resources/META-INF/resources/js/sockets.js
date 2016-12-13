@@ -59,6 +59,10 @@ function doSockets() {
 				scrollTop : $('.content').prop("scrollHeight")
 			}, 1000);
 		}
+		// Push space
+		else if (json.type == "pushSpace") {
+			showPushSpace();
+		}
 		// Get new message
 		else {
 			if (json.pseudo != pseudo && json.pseudo != "Admin") {
@@ -155,6 +159,17 @@ function getHistory(number) {
 	}));
 }
 
+function pushSpace() {
+	var now = new Date();
+	var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+	ws.send(JSON.stringify({
+		type : "pushSpace",
+		pseudo : pseudo,
+		message : undefined,
+		date : time
+	}));
+}
+
 ion.sound({
 	sounds : [ {
 		name : "button_tiny"
@@ -166,6 +181,54 @@ ion.sound({
 	multiplay : true,
 	volume : 0.5
 });
+
+var i = 0;
+function showPushSpace() {
+	i = 0;
+	$("#pushThis").removeClass("hidden");
+	animateDiv();
+}
+
+function makeNewPosition() {
+	// Get viewport dimensions (remove the dimension of the div)
+	var h = $(window).height() - 50;
+	var w = $(window).width() - 50;
+	var nh = Math.floor(Math.random() * h);
+	var nw = Math.floor(Math.random() * w);
+	return [ nh, nw ];
+}
+
+function animateDiv() {
+	var newq = makeNewPosition();
+	var oldq = $("#pushThis").offset();
+	var speed = calcSpeed([ oldq.top, oldq.left ], newq);
+	if (i < 6) {
+		$("#pushThis").animate({
+			top : newq[0],
+			left : newq[1]
+		}, speed, function() {
+			animateDiv();
+			rotate();
+		});
+		i++;
+	} else {
+		$("#pushThis").addClass("hidden");
+	}
+};
+
+function rotate() {
+	$(".fa-space-shuttle").toggleClass("rotate");
+}
+
+function calcSpeed(prev, next) {
+	var x = Math.abs(prev[1] - next[1]);
+	var y = Math.abs(prev[0] - next[0]);
+	var greatest = x > y ? x : y;
+	var speedModifier = 0.1;
+	var speed = Math.ceil(greatest / speedModifier);
+	return speed / 3;
+
+}
 
 function reverseEncoding(texte) {
 	texte = texte.replace(/&egrave;/g, 'è');

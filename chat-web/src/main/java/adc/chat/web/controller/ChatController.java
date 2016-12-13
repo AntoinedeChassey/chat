@@ -96,6 +96,7 @@ public class ChatController {
 			String now = df.format(today);
 			callback.setDate(now);
 			s.getBasicRemote().sendObject(callback);
+
 		} else if (message.getType().equals("getHistory")) {
 			Integer number = Integer.parseInt(message.getMessage());
 			number = number.equals(null) ? 0 : number;
@@ -103,10 +104,17 @@ public class ChatController {
 			Collections.reverse(messages);
 			s.getBasicRemote().sendObject(messages);
 
+		} else if (message.getType().equals("pushSpace")) {
+			Message callback = new Message();
+			callback.setMessage("Yiihhhaaaa!");
+			callback.setType("pushSpace");
+			callback.setPseudo("Admin");
+			broadcast(callback, s);
+
 		} else if (message.getType().equals("setPseudo")) {
 			Message callback = new Message();
 			callback.setMessage("Pseudo modifié avec succès: <b>" + message.getPseudo() + "</b>!");
-			callback.setType("callback");
+			callback.setType("setPseudo");
 			callback.setPseudo("Admin");
 			s.getBasicRemote().sendObject(callback);
 
