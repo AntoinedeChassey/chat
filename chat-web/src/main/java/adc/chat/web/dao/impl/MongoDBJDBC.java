@@ -27,7 +27,7 @@ public class MongoDBJDBC {
 
 	private void initDataSource() {
 		try {
-			mongoClient = new MongoClient("92.222.79.252", 27017);
+			mongoClient = new MongoClient("localhost", 27017);
 			dbName = "chat";
 			// db = mongoClient.getDatabase("chat");
 			System.out.println("Connected to database successfully");
