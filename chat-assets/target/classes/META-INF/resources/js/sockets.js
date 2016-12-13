@@ -1,10 +1,9 @@
 var url = window.location.origin + window.location.pathname;
-url = url.replace("http", "ws")
+url = url.replace("https", "wss")
 var urlParts = url.split("/");
 urlParts.pop();
 var newUrl = urlParts.join("/") + "/control";
 var ws;
-var pseudo;
 
 function doSockets() {
 	ws = new WebSocket(newUrl);
@@ -25,46 +24,48 @@ function doSockets() {
 		// $(".content").animate({
 		// scrollTop : $('.content').prop("scrollHeight")
 		// }, 1000);
+		var now = new Date();
+		var time = now.getHours() + ":" + now.getMinutes() + ":"
+				+ now.getSeconds();
 		ws.send(JSON.stringify({
 			type : "connect",
 			pseudo : pseudo,
-			message : undefined
+			message : undefined,
+			date : time
 		}));
 	};
 
 	ws.onmessage = function(evt) {
-		var message = JSON.parse(evt.data);
-		// console.log(message);
+		var json = JSON.parse(evt.data);
 		var pseudosList = $("#navigation");
-		if (message.pseudos) {
+		if (json.pseudos) {
 			pseudosList.text("");
-			for (var i = 0; i < message.pseudos.length; i++) {
-				var element = $("<a></a>").text(message.pseudos[i].pseudo);
+			for (var i = 0; i < json.pseudos.length; i++) {
+				var element = $("<a></a>").text(json.pseudos[i].pseudo);
 				pseudosList.append(element);
 			}
 		}
-		// Get all messages
-		else if (message.messages) {
-			for (var i = 0; i < message.messages.length; i++) {
+		// Get all messages (first connection)
+		else if (json.length >= 1) {
+			$(".content").empty();
+			for (var i = 0; i < json.length; i++) {
 				var div = $("<div>");
-				div.append("<h4 class='pseudo'>" + message.messages[i].pseudo
-						+ "<small class='date'>" + message.messages[i].date);
-				div.append("<p>" + message.messages[i].message);
+				div.append("<h4 class='pseudo'>" + json[i].pseudo
+						+ "<small class='date'>" + json[i].date);
+				div.append("<p>" + json[i].message);
 				$(".content").append(div);
-				setTimeout(
-						function() {
-							$('.content').scrollTop(
-									$('.content').prop("scrollHeight"));
-						}, 1000);
 			}
+			$(".content").animate({
+				scrollTop : $('.content').prop("scrollHeight")
+			}, 1000);
 		}
 		// Get new message
 		else {
-			if (message.pseudo != pseudo && message.pseudo != "Admin") {
+			if (json.pseudo != pseudo && json.pseudo != "Admin") {
 				ion.sound.play("button_tiny");
 				// Push notification
-				Push.create(message.pseudo, {
-					body : reverseEncoding(message.message),
+				Push.create(json.pseudo, {
+					body : reverseEncoding(json.message),
 					icon : 'img/planete.png',
 					timeout : 4000,
 					onClick : function() {
@@ -74,11 +75,12 @@ function doSockets() {
 				});
 			}
 			var div = $("<div>");
-			div.append("<h4 class='pseudo'>" + message.pseudo
-					+ "<small class='date'>" + message.date + "</small></h4>");
-			div.append("<p>" + message.message);
+			div.append("<h4 class='pseudo'>" + json.pseudo
+					+ "<small class='date'>" + json.date + "</small></h4>");
+			div.append("<p>" + json.message);
 			$(".content").append(div);
-			$('.content').scrollTop($('.content').prop("scrollHeight"));
+			if (autoScroll)
+				$('.content').scrollTop($('.content').prop("scrollHeight"));
 		}
 	};
 
@@ -113,7 +115,7 @@ function doSockets() {
 					var now = new Date();
 					var time = now.getHours() + ":" + now.getMinutes() + ":"
 							+ now.getSeconds();
-					var message = {
+					var json = {
 						type : "message",
 						pseudo : pseudo,
 						message : $("#message").val(),
@@ -121,7 +123,7 @@ function doSockets() {
 					};
 					$("#message").val("");
 					$("#submit").attr("disabled", "disabled");
-					ws.send(JSON.stringify(message));
+					ws.send(JSON.stringify(json));
 					return false;
 				} else {
 					return false;
@@ -130,10 +132,26 @@ function doSockets() {
 }
 
 function setPseudo(newPseudo) {
+	var now = new Date();
+	var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 	ws.send(JSON.stringify({
 		type : "setPseudo",
 		pseudo : newPseudo,
-		message : undefined
+		message : undefined,
+		date : time
+	}));
+}
+
+function getHistory(number) {
+	if (number > 1000)
+		number = 1000;
+	var now = new Date();
+	var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+	ws.send(JSON.stringify({
+		type : "getHistory",
+		pseudo : pseudo,
+		message : number,
+		date : time
 	}));
 }
 
@@ -176,9 +194,9 @@ function reverseEncoding(texte) {
 	texte = texte.replace(/&uml;/g, "¨");
 	texte = texte.replace(/&deg;/g, "°");
 	texte = texte.replace(/&amp;/g, "&");
-	
+
 	texte = texte.replace(/&ccedil;/g, "ç");
-	
+
 	texte = texte.replace(/&sect;/g, "§");
 	texte = texte.replace(/&pound;/g, "£");
 	texte = texte.replace(/&curren;/g, "¤");

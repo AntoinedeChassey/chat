@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -18,29 +19,36 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.mongodb.morphia.Datastore;
+
+import com.google.gson.Gson;
+
+import adc.chat.web.dao.impl.MongoDBJDBC;
 import adc.chat.web.dto.Message;
-import adc.chat.web.dto.Messages;
 import adc.chat.web.dto.Pseudos;
-import adc.chat.web.provider.MessageDecoder;
-import adc.chat.web.provider.MessageEncoder;
+import adc.chat.web.provider.MessageEncoderDecoder;
 import adc.chat.web.provider.MessagesEncoder;
 import adc.chat.web.provider.PseudosEncoder;
 import adc.chat.web.security.Security;
 
 /**
  * https://netbeans.org/kb/docs/javaee/maven-websocketapi.html
+ * http://mongodb.github.io/morphia/1.2/getting-started/quick-tour/
  * 
  * @author Antoine
  *
  */
-@ServerEndpoint(value = "/control", encoders = { MessageEncoder.class, PseudosEncoder.class,
-		MessagesEncoder.class }, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "/control", encoders = { MessageEncoderDecoder.class, MessagesEncoder.class,
+		PseudosEncoder.class }, decoders = MessageEncoderDecoder.class)
+
 public class ChatController {
+
+	private Datastore db = MongoDBJDBC.getInstance().getDataSource();
+	private Gson gson = new Gson();
 
 	private static Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
 
 	private static Pseudos pseudos = new Pseudos();
-	private static Messages messages = new Messages();
 
 	Pattern pattern = Pattern.compile("@\\\\+");
 
@@ -64,21 +72,35 @@ public class ChatController {
 
 	@OnMessage
 	public void message(Message message, Session s) throws IOException, EncodeException {
+
 		message = Security.sanitizeMessage(message);
+
 		if (message.getType().equals("connect")) {
+			// Add pseudo and broadcast
+			pseudos.addPseudo(message.getPseudo(), s.getId());
+			broadcast(pseudos, s);
+
+			// Send saved messages back to client
+			List<Message> messages = db.createQuery(Message.class).order("-_id").limit(50).asList();
+			// Reverse the list
+			Collections.reverse(messages);
+			s.getBasicRemote().sendObject(messages);
+
+			// Say welcome to client
 			Message callback = new Message();
 			callback.setMessage("Bienvenue dans le chat <b>" + message.getPseudo() + "</b>!");
-			callback.setType("callback");
+			callback.setType("connect");
 			callback.setPseudo("Admin");
 			DateFormat df = new SimpleDateFormat("HH:mm:ss");
 			Date today = Calendar.getInstance().getTime();
 			String now = df.format(today);
 			callback.setDate(now);
 			s.getBasicRemote().sendObject(callback);
+		} else if (message.getType().equals("getHistory")) {
+			List<Message> messages = db.createQuery(Message.class).order("-_id")
+					.limit(Integer.parseInt(message.getMessage())).asList();
+			Collections.reverse(messages);
 			s.getBasicRemote().sendObject(messages);
-
-			pseudos.addPseudo(message.getPseudo(), s.getId());
-			broadcast(pseudos, s);
 
 		} else if (message.getType().equals("setPseudo")) {
 			Message callback = new Message();
@@ -106,8 +128,9 @@ public class ChatController {
 			// }
 			// }
 			// if (!matched) {
-
-			messages.addMessage(message.getMessage(), message.getType(), message.getPseudo(), message.getDate());
+			db.save(message);
+			// messages.addMessage(message.getMessage(), message.getType(),
+			// message.getPseudo(), message.getDate());
 			broadcast(message, s);
 			// }
 			// }
