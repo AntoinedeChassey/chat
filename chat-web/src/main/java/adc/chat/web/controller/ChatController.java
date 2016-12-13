@@ -121,6 +121,9 @@ public class ChatController {
 			pseudos.setPseudo(message.getPseudo(), s.getId());
 			broadcast(pseudos, s);
 
+		} else if (message.getType().equals("bot")) {
+			broadcast(message, s);
+
 		} else if (message.getType().equals("message")) {
 			// Show message only to a specific id
 			// Matcher matcher = pattern.matcher(message.getMessage());
@@ -144,7 +147,6 @@ public class ChatController {
 			// }
 			// }
 		}
-
 	}
 
 	private void broadcast(Object objet, Session s) {
