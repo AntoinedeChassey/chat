@@ -41,7 +41,8 @@ function doSockets() {
 		if (json.pseudos) {
 			pseudosList.text("");
 			for (var i = 0; i < json.pseudos.length; i++) {
-				var element = $("<a></a>").text(json.pseudos[i].pseudo);
+				var element = $("<a></a>").text(
+						reverseEncoding(json.pseudos[i].pseudo));
 				pseudosList.append(element);
 			}
 		}
@@ -52,7 +53,13 @@ function doSockets() {
 				var div = $("<div>");
 				div.append("<h4 class='pseudo'>" + json[i].pseudo
 						+ "<small class='date'>" + json[i].date);
-				div.append("<p>" + json[i].message);
+				div.append("<p>"
+						+ json[i].message.replace(/(www\..+?)(\s|$)/g,
+								function(text, link) {
+									return '<a class="urlLink" href="http://' + link
+											+ '" target="_blank">' + link
+											+ '</a>';
+								}));
 				$(".content").append(div);
 			}
 			$(".content").animate({
@@ -68,7 +75,7 @@ function doSockets() {
 			if (json.pseudo != pseudo && json.pseudo != "Admin") {
 				ion.sound.play("button_tiny");
 				// Push notification
-				Push.create(json.pseudo, {
+				Push.create(reverseEncoding(json.pseudo), {
 					body : reverseEncoding(json.message),
 					icon : 'img/planete.png',
 					timeout : 4000,
@@ -81,17 +88,27 @@ function doSockets() {
 			var div = $("<div>");
 			div.append("<h4 class='pseudo'>" + json.pseudo
 					+ "<small class='date'>" + json.date + "</small></h4>");
-			div.append("<p>" + json.message);
+			div.append("<p>"
+					+ json.message.replace(/(www\..+?)(\s|$)/g, function(text,
+							link) {
+						return '<a class="urlLink" href="http://' + link + '" target="_blank">'
+								+ link + '</a>';
+					}));
 			$(".content").append(div);
 			if (autoScroll)
 				$('.content').scrollTop($('.content').prop("scrollHeight"));
 		}
 	};
 
-	$("#navigation").on("click", "a", function() {
-		var pseudo = $(this).html();
-		$("#message").val($("#message").val() + "@" + pseudo + " ");
-	});
+	$("#navigation").on(
+			"click",
+			"a",
+			function() {
+				var pseudo = $(this).html();
+				$("#message").val(
+						$("#message").val() + "@" + reverseEncoding(pseudo)
+								+ " ");
+			});
 
 	ws.onclose = function() {
 		// Push notification
@@ -231,6 +248,9 @@ function calcSpeed(prev, next) {
 }
 
 function reverseEncoding(texte) {
+	texte = texte.replace(/&lt;/g, '<');
+	texte = texte.replace(/&gt;/g, '>');
+
 	texte = texte.replace(/&egrave;/g, 'è');
 	texte = texte.replace(/&eacute;/g, 'é');
 	texte = texte.replace(/&ecirc;/g, 'ê');

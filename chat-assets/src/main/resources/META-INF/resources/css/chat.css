@@ -125,6 +125,10 @@ a:hover {
 	font-weight: normal;
 }
 
+a.urlLink {
+	color: #88cc9e;
+}
+
 #image {
 	max-width: 300px;
 	max-height: 250px;
