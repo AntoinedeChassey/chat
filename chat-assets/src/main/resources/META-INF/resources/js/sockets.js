@@ -38,6 +38,7 @@ function doSockets() {
 	ws.onmessage = function(evt) {
 		var json = JSON.parse(evt.data);
 		var pseudosList = $("#navigation");
+		// Get pseudos list
 		if (json.pseudos) {
 			pseudosList.text("");
 			for (var i = 0; i < json.pseudos.length; i++) {
@@ -56,9 +57,9 @@ function doSockets() {
 				div.append("<p>"
 						+ json[i].message.replace(/(www\..+?)(\s|$)/g,
 								function(text, link) {
-									return '<a class="urlLink" href="http://' + link
-											+ '" target="_blank">' + link
-											+ '</a>';
+									return '<a class="urlLink" href="http://'
+											+ link + '" target="_blank">'
+											+ link + '</a>';
 								}));
 				$(".content").append(div);
 			}
@@ -70,9 +71,25 @@ function doSockets() {
 		else if (json.type == "pushSpace") {
 			showPushSpace();
 		}
+		// Get new message from bot
+		else if (json.type == "bot") {
+			ion.sound.play("button_tiny");
+			var div = $("<div>");
+			div.append("<h4 class='pseudo'>" + json.pseudo
+					+ "<small class='date'>" + json.date + "</small></h4>");
+			div.append("<p class='accent'>"
+					+ json.message.replace(/(www\..+?)(\s|$)/g, function(text,
+							link) {
+						return '<a class="urlLink" href="http://' + link
+								+ '" target="_blank">' + link + '</a>';
+					}));
+			$(".content").append(div);
+			if (autoScroll)
+				$('.content').scrollTop($('.content').prop("scrollHeight"));
+		}
 		// Get new message
 		else {
-			if (json.pseudo != pseudo && json.pseudo != "Admin") {
+			if (json.pseudo != pseudo) {
 				ion.sound.play("button_tiny");
 				// Push notification
 				Push.create(reverseEncoding(json.pseudo), {
@@ -91,8 +108,8 @@ function doSockets() {
 			div.append("<p>"
 					+ json.message.replace(/(www\..+?)(\s|$)/g, function(text,
 							link) {
-						return '<a class="urlLink" href="http://' + link + '" target="_blank">'
-								+ link + '</a>';
+						return '<a class="urlLink" href="http://' + link
+								+ '" target="_blank">' + link + '</a>';
 					}));
 			$(".content").append(div);
 			if (autoScroll)

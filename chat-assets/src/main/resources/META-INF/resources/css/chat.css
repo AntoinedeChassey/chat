@@ -126,6 +126,10 @@ a:hover {
 }
 
 a.urlLink {
+	color: #89d77d;
+}
+
+.accent {
 	color: #88cc9e;
 }
 

@@ -89,7 +89,7 @@ public class ChatController {
 			// Say welcome to client
 			Message callback = new Message();
 			callback.setMessage("Bienvenue dans le chat <b>" + message.getPseudo() + "</b>!");
-			callback.setType("connect");
+			callback.setType("bot");
 			callback.setPseudo("Admin");
 			DateFormat df = new SimpleDateFormat("HH:mm:ss");
 			Date today = Calendar.getInstance().getTime();
